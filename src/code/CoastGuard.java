@@ -83,8 +83,8 @@ public class CoastGuard {
             goal=dfs(grid, visualize);
         } else if (strategy.equals("ID")) {
         	goal=ids(grid, visualize);
-        } else if (strategy.equals("UCS")) {
-//            ucs(grid, visualize);
+        } else if (strategy.equals("UC")) {
+            goal=ucs(grid, visualize);
         } else if (strategy.equals("A*")) {
 //            astar(grid, visualize);
         } else if (strategy.equals("Greedy")) {
@@ -408,7 +408,7 @@ public class CoastGuard {
 
     // Uniform Cost Search
     // The cost is the number of people who died
-    public static void ucs(String grid, Boolean visualize) {
+    public static Node ucs(String grid, Boolean visualize) {
         // creating the root node of the tree
         // splitting the grid string into an array of strings
         String[] gridArray = grid.split(";");
@@ -452,7 +452,7 @@ public class CoastGuard {
             if (node.ships.size() == 0 && node.numberOfPeopleOntheCoastGuard == 0) {
                 System.out.println("Goal node found");
                 // return the node
-                return;
+                return node;
             }
 
             // get the children of the node
@@ -493,6 +493,7 @@ public class CoastGuard {
                 }
             }
         }
+        return null;
     }
 
     // A* Search
