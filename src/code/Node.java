@@ -1,4 +1,5 @@
 package code;
+
 import java.util.*;
 
 public class Node {
@@ -92,15 +93,16 @@ public class Node {
     public ArrayList<Node> getChildren(int capacity, int gridWidth, int gridLength, ArrayList<Station> stations) {
         ArrayList<Node> children = new ArrayList<Node>();
 
-        if (this.y - 1 >=0) {
+        if (this.y - 1 >= 0) {
             Node leftNode = new Node();
             leftNode.x = this.x;
-            leftNode.y = this.y-1;
+            leftNode.y = this.y - 1;
             leftNode.parent = this;
             leftNode.action = "left";
             leftNode.numberOfPeopleOntheCoastGuard = this.numberOfPeopleOntheCoastGuard;
             leftNode.numberOfCollectedBlackboxes = this.numberOfCollectedBlackboxes;
             leftNode.numberOfdeath = this.numberOfdeath;
+            leftNode.numberOfPeopleSaved = this.numberOfPeopleSaved;
             leftNode.depth = this.depth + 1;
             leftNode.ships = handleShips(this.ships, "left", null,
                     capacity - this.numberOfPeopleOntheCoastGuard, leftNode);
@@ -109,13 +111,14 @@ public class Node {
         }
         if (this.y + 1 < gridWidth) {
             Node rightNode = new Node();
-            rightNode.x = this.x ;
-            rightNode.y = this.y+1;
+            rightNode.x = this.x;
+            rightNode.y = this.y + 1;
             rightNode.parent = this;
             rightNode.action = "right";
             rightNode.numberOfPeopleOntheCoastGuard = this.numberOfPeopleOntheCoastGuard;
             rightNode.numberOfCollectedBlackboxes = this.numberOfCollectedBlackboxes;
             rightNode.numberOfdeath = this.numberOfdeath;
+            rightNode.numberOfPeopleSaved = this.numberOfPeopleSaved;
             rightNode.depth = this.depth + 1;
             rightNode.ships = handleShips(this.ships, "right", null,
                     capacity - this.numberOfPeopleOntheCoastGuard, rightNode);
@@ -125,13 +128,14 @@ public class Node {
 
         if (this.x - 1 >= 0) {
             Node upNode = new Node();
-            upNode.x = this.x-1;
+            upNode.x = this.x - 1;
             upNode.y = this.y;
             upNode.parent = this;
             upNode.action = "up";
             upNode.numberOfPeopleOntheCoastGuard = this.numberOfPeopleOntheCoastGuard;
             upNode.numberOfCollectedBlackboxes = this.numberOfCollectedBlackboxes;
             upNode.numberOfdeath = this.numberOfdeath;
+            upNode.numberOfPeopleSaved = this.numberOfPeopleSaved;
             upNode.depth = this.depth + 1;
             upNode.ships = handleShips(this.ships, "up", null,
                     capacity - this.numberOfPeopleOntheCoastGuard, upNode);
@@ -139,14 +143,15 @@ public class Node {
             children.add(upNode);
         }
 
-        if (this.x+1 < gridLength) {
+        if (this.x + 1 < gridLength) {
             Node downNode = new Node();
-            downNode.x = this.x+1;
+            downNode.x = this.x + 1;
             downNode.y = this.y;
             downNode.parent = this;
             downNode.action = "down";
             downNode.numberOfPeopleOntheCoastGuard = this.numberOfPeopleOntheCoastGuard;
             downNode.numberOfCollectedBlackboxes = this.numberOfCollectedBlackboxes;
+            downNode.numberOfdeath = this.numberOfdeath;
             downNode.numberOfdeath = this.numberOfdeath;
             downNode.depth = this.depth + 1;
             downNode.ships = handleShips(this.ships, "down", null,
@@ -164,6 +169,7 @@ public class Node {
             pickup.action = "pickup";
             pickup.numberOfCollectedBlackboxes = this.numberOfCollectedBlackboxes;
             pickup.numberOfdeath = this.numberOfdeath;
+            pickup.numberOfPeopleSaved = this.numberOfPeopleSaved;
             pickup.depth = this.depth + 1;
             // System.out.println(ship.numberOfPeopleOntheShip);
             pickup.ships = handleShips(this.ships, "pickup", ship,
@@ -176,22 +182,22 @@ public class Node {
             }
             // System.out.println(this.capacity + "Ship " + pickup.numberOfPeopleOntheBoat);
             children.add(pickup);
-        }
-        else if (ship != null && ship.wreck && ship.retrievable) {
+        } else if (ship != null && ship.wreck && ship.retrievable) {
             Node retriNode = new Node();
             retriNode.x = this.x;
             retriNode.y = this.y;
             retriNode.parent = this;
             retriNode.action = "retrieve";
             retriNode.numberOfPeopleOntheCoastGuard = this.numberOfPeopleOntheCoastGuard;
-            retriNode.numberOfCollectedBlackboxes = this.numberOfCollectedBlackboxes ;
+            retriNode.numberOfCollectedBlackboxes = this.numberOfCollectedBlackboxes;
             retriNode.numberOfdeath = this.numberOfdeath;
+            retriNode.numberOfPeopleSaved = this.numberOfPeopleSaved;
             retriNode.depth = this.depth + 1;
             retriNode.ships = handleShips(this.ships, "retrieve", ship,
                     capacity - this.numberOfPeopleOntheCoastGuard, retriNode);
-            //Ship ship1 = onAShip(this.x, this.y, this.ships);
-            if (ship != null && ship.wreck && ship.retrievable ) {
-            children.add(retriNode);
+            // Ship ship1 = onAShip(this.x, this.y, this.ships);
+            if (ship != null && ship.wreck && ship.retrievable) {
+                children.add(retriNode);
             }
         }
 
@@ -233,14 +239,14 @@ public class Node {
                         ship.damage = s.damage;
                         ship.blackboxtaken = s.blackboxtaken;
                         ship.retrievable = s.retrievable;
-                        ship.numberOfPeopleOntheShip =s.numberOfPeopleOntheShip- boatCapacity;
-                        
+                        ship.numberOfPeopleOntheShip = s.numberOfPeopleOntheShip - boatCapacity;
+
                         if (ship.numberOfPeopleOntheShip <= 0) {
                             ship.numberOfPeopleOntheShip = 0;
                             ship.wreck = true;
-                        }else {
-                        	ship.numberOfPeopleOntheShip-=1;
-                        	child.numberOfdeath++;
+                        } else {
+                            ship.numberOfPeopleOntheShip -= 1;
+                            child.numberOfdeath++;
                         }
                         shipsCopy.add(ship);
                     } else if (action.equals("retrieve")) {
