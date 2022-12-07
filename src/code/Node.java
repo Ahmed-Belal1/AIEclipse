@@ -199,7 +199,7 @@ public class Node {
             dropoff.x = this.x;
             dropoff.y = this.y;
             dropoff.parent = this;
-            dropoff.action = "dropoff";
+            dropoff.action = "drop";
 
             dropoff.numberOfCollectedBlackboxes = this.numberOfCollectedBlackboxes;
             dropoff.numberOfdeath = this.numberOfdeath;

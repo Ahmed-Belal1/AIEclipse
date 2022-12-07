@@ -94,9 +94,13 @@ public class CoastGuard {
         String path = "";
         Node current = goal;
         int numberOfnodes = 0;
+        int numberOfCollectedBlackboxes=0;
         if (goal != null) {
             while (current.parent != null) {
                 numberOfnodes++;
+                if (current.action.equals("retrieve")) {
+                	numberOfCollectedBlackboxes++;
+                }
                 if (current==goal) {
                 	path = current.action + path;
                 }
@@ -105,7 +109,7 @@ public class CoastGuard {
                 }
                 current = current.parent;
             }
-            return path + ";" + goal.numberOfdeath + ";" + goal.numberOfCollectedBlackboxes + ";" + numberOfnodes;
+            return path + ";" + goal.numberOfdeath + ";" + numberOfCollectedBlackboxes + ";" + numberOfnodes;
         }
 
         return "";
