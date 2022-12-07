@@ -97,7 +97,12 @@ public class CoastGuard {
         if (goal != null) {
             while (current.parent != null) {
                 numberOfnodes++;
-                path = current.action + "," + path;
+                if (current==goal) {
+                	path = current.action + path;
+                }
+                else {
+                	path = current.action + "," + path;
+                }
                 current = current.parent;
             }
             return path + ";" + goal.numberOfdeath + ";" + goal.numberOfCollectedBlackboxes + ";" + numberOfnodes;

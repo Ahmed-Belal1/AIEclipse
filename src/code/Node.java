@@ -91,10 +91,10 @@ public class Node {
     public ArrayList<Node> getChildren(int capacity, int gridWidth, int gridLength, ArrayList<Station> stations) {
         ArrayList<Node> children = new ArrayList<Node>();
 
-        if (this.x - 1 >= 0) {
+        if (this.y - 1 >=0) {
             Node leftNode = new Node();
-            leftNode.x = this.x - 1;
-            leftNode.y = this.y;
+            leftNode.x = this.x;
+            leftNode.y = this.y-1;
             leftNode.parent = this;
             leftNode.action = "left";
             leftNode.numberOfPeopleOntheCoastGuard = this.numberOfPeopleOntheCoastGuard;
@@ -106,10 +106,10 @@ public class Node {
 
             children.add(leftNode);
         }
-        if (this.x + 1 < gridWidth) {
+        if (this.y + 1 < gridLength) {
             Node rightNode = new Node();
-            rightNode.x = this.x + 1;
-            rightNode.y = this.y;
+            rightNode.x = this.x ;
+            rightNode.y = this.y+1;
             rightNode.parent = this;
             rightNode.action = "right";
             rightNode.numberOfPeopleOntheCoastGuard = this.numberOfPeopleOntheCoastGuard;
@@ -122,10 +122,10 @@ public class Node {
             children.add(rightNode);
         }
 
-        if (this.y - 1 >= 0) {
+        if (this.x - 1 >= 0) {
             Node upNode = new Node();
-            upNode.x = this.x;
-            upNode.y = this.y - 1;
+            upNode.x = this.x-1;
+            upNode.y = this.y;
             upNode.parent = this;
             upNode.action = "up";
             upNode.numberOfPeopleOntheCoastGuard = this.numberOfPeopleOntheCoastGuard;
@@ -138,10 +138,10 @@ public class Node {
             children.add(upNode);
         }
 
-        if (this.y + 1 < gridLength) {
+        if (this.x+1 < gridWidth) {
             Node downNode = new Node();
-            downNode.x = this.x;
-            downNode.y = this.y + 1;
+            downNode.x = this.x+1;
+            downNode.y = this.y;
             downNode.parent = this;
             downNode.action = "down";
             downNode.numberOfPeopleOntheCoastGuard = this.numberOfPeopleOntheCoastGuard;
