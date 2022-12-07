@@ -106,7 +106,7 @@ public class Node {
 
             children.add(leftNode);
         }
-        if (this.y + 1 < gridLength) {
+        if (this.y + 1 < gridWidth) {
             Node rightNode = new Node();
             rightNode.x = this.x ;
             rightNode.y = this.y+1;
@@ -138,7 +138,7 @@ public class Node {
             children.add(upNode);
         }
 
-        if (this.x+1 < gridWidth) {
+        if (this.x+1 < gridLength) {
             Node downNode = new Node();
             downNode.x = this.x+1;
             downNode.y = this.y;
@@ -176,20 +176,22 @@ public class Node {
             // System.out.println(this.capacity + "Ship " + pickup.numberOfPeopleOntheBoat);
             children.add(pickup);
         }
-
-        if (ship != null && ship.wreck && ship.retrievable && !ship.blackboxtaken) {
+        else if (ship != null && ship.wreck && ship.retrievable) {
             Node retriNode = new Node();
             retriNode.x = this.x;
             retriNode.y = this.y;
             retriNode.parent = this;
             retriNode.action = "retrieve";
             retriNode.numberOfPeopleOntheCoastGuard = this.numberOfPeopleOntheCoastGuard;
-            retriNode.numberOfCollectedBlackboxes = this.numberOfCollectedBlackboxes + 1;
+            retriNode.numberOfCollectedBlackboxes = this.numberOfCollectedBlackboxes ;
             retriNode.numberOfdeath = this.numberOfdeath;
             retriNode.depth = this.depth + 1;
             retriNode.ships = handleShips(this.ships, "retrieve", ship,
                     capacity - this.numberOfPeopleOntheCoastGuard, retriNode);
+            //Ship ship1 = onAShip(this.x, this.y, this.ships);
+            if (ship != null && ship.wreck && ship.retrievable ) {
             children.add(retriNode);
+            }
         }
 
         Station station = isOnAStation(this.x, this.y, stations);
@@ -200,7 +202,6 @@ public class Node {
             dropoff.y = this.y;
             dropoff.parent = this;
             dropoff.action = "drop";
-
             dropoff.numberOfCollectedBlackboxes = this.numberOfCollectedBlackboxes;
             dropoff.numberOfdeath = this.numberOfdeath;
             dropoff.depth = this.depth + 1;
@@ -230,11 +231,14 @@ public class Node {
                         ship.damage = s.damage;
                         ship.blackboxtaken = s.blackboxtaken;
                         ship.retrievable = s.retrievable;
-
-                        ship.numberOfPeopleOntheShip -= boatCapacity;
+                        ship.numberOfPeopleOntheShip =s.numberOfPeopleOntheShip- boatCapacity;
+                        
                         if (ship.numberOfPeopleOntheShip <= 0) {
                             ship.numberOfPeopleOntheShip = 0;
                             ship.wreck = true;
+                        }else {
+                        	ship.numberOfPeopleOntheShip-=1;
+                        	child.numberOfdeath++;
                         }
                         shipsCopy.add(ship);
                     } else if (action.equals("retrieve")) {

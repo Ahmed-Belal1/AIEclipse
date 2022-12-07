@@ -4,9 +4,9 @@ import java.util.*;
 public class CoastGuard {
     public static void main(String[] args) throws Exception {
 
-        System.out.println("Coast Guard");
+       // System.out.println("Coast Guard");
         CoastGuard cg = new CoastGuard();
-        System.out.println(cg.genGrid());
+        //System.out.println(cg.genGrid());
         // SearchTree tree = new SearchTree("6,7;82;1,4;2,3;1,1,58,3,0,58,4,2,72;");
         // System.out.println(tree.size);
         bfs("10,6;59;1,7;0,0,2,2,3,0,5,3;1,3,69,3,4,80,4,7,94,4,9,14,5,2,39;", true);
@@ -79,10 +79,10 @@ public class CoastGuard {
         Node goal = null;
         if (strategy.equals("BF")) {
             goal = bfs(grid, visualize);
-        } else if (strategy.equals("DFS")) {
-//            dfs(grid, visualize);
-        } else if (strategy.equals("IDS")) {
-//            ids(grid, visualize);
+        } else if (strategy.equals("DF")) {
+            goal=dfs(grid, visualize);
+        } else if (strategy.equals("ID")) {
+        	goal=ids(grid, visualize);
         } else if (strategy.equals("UCS")) {
 //            ucs(grid, visualize);
         } else if (strategy.equals("A*")) {
@@ -92,6 +92,7 @@ public class CoastGuard {
         }
 
         String path = "";
+       // System.out.println(goal);
         Node current = goal;
         int numberOfnodes = 0;
         int numberOfCollectedBlackboxes=0;
@@ -99,8 +100,10 @@ public class CoastGuard {
             while (current.parent != null) {
                 numberOfnodes++;
                 if (current.action.equals("retrieve")) {
+                	//System.out.println(current.parent.parent.action+" " +current.ships.size());
                 	numberOfCollectedBlackboxes++;
                 }
+                //System.out.println(current.action +" "+ current.numberOfPeopleOntheCoastGuard+" " +current.numberOfdeath+" "+ (current.ships.size() !=0? current.ships.get(0).numberOfPeopleOntheShip :0));
                 if (current==goal) {
                 	path = current.action + path;
                 }
@@ -297,7 +300,7 @@ public class CoastGuard {
     }
 
     // Iterative Deepening Search
-    public static void ids(String grid, Boolean visualize) {
+    public static Node ids(String grid, Boolean visualize) {
 
         // creating the root node of the tree
         // splitting the grid string into an array of strings
@@ -318,17 +321,10 @@ public class CoastGuard {
         HashSet<Node> visitedSet;
         ArrayList<Ship> ships = getShips(gridArray);
 
-        Node root = new Node();
-        root.x = boatX;
-        root.y = boatY;
-        root.depth = 0;
-        root.ships = ships;
-        System.out.println("Root node created" + root.x + " " + root.y);
-        visitedSet = new HashSet<Node>();
-        visitedSet.add(root);
+
 
         // create max depth
-        int maxDepth = 10;
+        int maxDepth = 150;
 
         // create current depth
         int currentDepth = 0;
@@ -337,8 +333,16 @@ public class CoastGuard {
         while (currentDepth <= maxDepth) {
             // create a stack for DFS
             Stack<Node> stack = new Stack<Node>();
-
+            //System.out.println(currentDepth);
             // add root node to the stack
+            Node root = new Node();
+            root.x = boatX;
+            root.y = boatY;
+            root.depth = 0;
+            root.ships = ships;
+            System.out.println("Root node created" + root.x + " " + root.y);
+            visitedSet = new HashSet<Node>();
+            visitedSet.add(root);
             stack.push(root);
 
             // while stack is not empty
@@ -348,9 +352,9 @@ public class CoastGuard {
                 // System.out.println("Node removed from stack" + node.x + " " + node.y);
                 // if the node is the goal node
                 if (node.ships.size() == 0 && node.numberOfPeopleOntheCoastGuard == 0) {
-                    System.out.println("Goal node found");
+                    //System.out.println("Goal node found");
                     // return the node
-                    return;
+                    return node;
                 }
 
                 // check if the node is less than the current depth
@@ -398,6 +402,7 @@ public class CoastGuard {
             // increment the current depth
             currentDepth++;
         }
+        return null;
 
     }
 
@@ -428,7 +433,7 @@ public class CoastGuard {
         root.y = boatY;
         root.depth = 0;
         root.ships = ships;
-        System.out.println("Root node created" + root.x + " " + root.y);
+       // System.out.println("Root node created" + root.x + " " + root.y);
         visitedSet = new HashSet<Node>();
         visitedSet.add(root);
 
