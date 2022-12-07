@@ -251,7 +251,7 @@ public class CoastGuard {
             // System.out.println("Node removed from stack" + node.x + " " + node.y);
             // if the node is the goal node
             if (node.ships.size() == 0 && node.numberOfPeopleOntheCoastGuard == 0) {
-                System.out.println("Goal node found");
+                //System.out.println("Goal node found");
                 // return the node
                 return node;
             }
@@ -340,7 +340,7 @@ public class CoastGuard {
             root.y = boatY;
             root.depth = 0;
             root.ships = ships;
-            System.out.println("Root node created" + root.x + " " + root.y);
+            //System.out.println("Root node created" + root.x + " " + root.y);
             visitedSet = new HashSet<Node>();
             visitedSet.add(root);
             stack.push(root);
@@ -450,7 +450,7 @@ public class CoastGuard {
             // System.out.println("Node removed from queue" + node.x + " " + node.y);
             // if the node is the goal node
             if (node.ships.size() == 0 && node.numberOfPeopleOntheCoastGuard == 0) {
-                System.out.println("Goal node found");
+                //System.out.println("Goal node found");
                 // return the node
                 return node;
             }
