@@ -18,6 +18,7 @@ public class Node {
     String action;
     int numberOfCollectedBlackboxes;
     int numberOfdeath;
+    int numberOfPeopleSaved;
     int depth;
 
     public Node() {
@@ -207,6 +208,7 @@ public class Node {
             dropoff.depth = this.depth + 1;
             dropoff.ships = handleShips(this.ships, "dropoff", null,
                     capacity - this.numberOfPeopleOntheCoastGuard, dropoff);
+            dropoff.numberOfPeopleSaved = this.numberOfPeopleSaved + this.numberOfPeopleOntheCoastGuard;
             dropoff.numberOfPeopleOntheCoastGuard = 0;
             // System.out.println(this.visitedSet.contains(dropoff));
             children.add(dropoff);
