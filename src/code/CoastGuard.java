@@ -101,7 +101,7 @@ public class CoastGuard {
             while (current.parent != null) {
                 numberOfnodes++;
                 if (current.action.equals("retrieve")) {
-                    System.out.println(current.parent.parent.action + " " + current.parent.ships.get(0).damage);
+                    // System.out.println(current.parent.parent.action + " " + current.parent.ships.get(0).damage);
                     numberOfCollectedBlackboxes++;
                 }
                 // System.out.println(current.action +" "+

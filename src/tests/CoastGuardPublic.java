@@ -632,10 +632,10 @@ public class CoastGuardPublic {
 		}
 
 		boolean f4() {
-			System.out.println(x00 + "," + x01);
-
+			
 			if (!ss.containsKey(x00 + "," + x01)) {
 				mn();
+				System.out.println(x00 + "," + x01);
 				System.out.println("f4");
 				return false;
 			}
@@ -743,6 +743,9 @@ public class CoastGuardPublic {
 		for (int i = 0; i < actions.length; i++) {
 			// Set set = m4.entrySet();
 			// System.out.println(set.toString());
+			// System.out.println(i+1);
+			// System.out.println(actions[i]);
+
 			switch (actions[i]) {
 				case "up":
 					linkin = s.f1(-1, 0);
@@ -771,13 +774,12 @@ public class CoastGuardPublic {
 
 			}
 			if (!linkin) {
-				System.out.println(actions[i - 1]);
 				System.out.println("action that failed " + actions[i]);
 				return false;
 			}
 		}
 
-		System.out.println(blue + " " + s.d);
+		// System.out.println(blue + " " + s.d);
 		return s.cool() && s.d == blue && s.r == doors;
 	}
 }

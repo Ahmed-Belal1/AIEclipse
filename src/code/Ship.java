@@ -10,7 +10,7 @@ public class Ship {
 
     public Ship() {
         this.numberOfPeopleOntheShip = 0;
-        damage = 0;
+        damage = 1;
         wreck = false;
         this.positionXOftheShip = 0;
         this.positionYOftheShip = 0;
