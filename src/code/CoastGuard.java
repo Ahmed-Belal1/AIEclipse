@@ -86,10 +86,10 @@ public class CoastGuard {
             goal = ids(grid, visualize);
         } else if (strategy.equals("UC")) {
             goal = ucs(grid, visualize);
-        } else if (strategy.equals("A*")) {
-            // astar(grid, visualize);
-        } else if (strategy.equals("Greedy")) {
-            // greedy(grid, visualize);
+        } else if (strategy.equals("AS1")) {
+            goal = astar1(grid, visualize);
+        } else if (strategy.equals("GR1")) {
+            goal = greedy1(grid, visualize);
         }
 
         String path = "";
@@ -101,7 +101,8 @@ public class CoastGuard {
             while (current.parent != null) {
                 numberOfnodes++;
                 if (current.action.equals("retrieve")) {
-                    // System.out.println(current.parent.parent.action + " " + current.parent.ships.get(0).damage);
+                    // System.out.println(current.parent.parent.action + " " +
+                    // current.parent.ships.get(0).damage);
                     numberOfCollectedBlackboxes++;
                 }
                 // System.out.println(current.action +" "+
@@ -148,6 +149,7 @@ public class CoastGuard {
         root.gridWidth = gridWidth;
         root.gridLength = gridLength;
         root.stations = stations;
+        root.capacity = capacity;
         // System.out.println("Root node created" + root.x + " " + root.y);
         visitedSet = new HashSet<Node>();
         visitedSet.add(root);
@@ -167,7 +169,7 @@ public class CoastGuard {
             if (node.ships.size() == 0 && node.numberOfPeopleOntheCoastGuard == 0) {
                 // System.out.println("Goal node found");
                 // return the node
-                if(visualize){
+                if (visualize) {
                     visualize(node);
                 }
                 return node;
@@ -245,6 +247,7 @@ public class CoastGuard {
         root.gridWidth = gridWidth;
         root.gridLength = gridLength;
         root.stations = stations;
+        root.capacity = capacity;
         // System.out.println("Root node created" + root.x + " " + root.y);
         visitedSet = new HashSet<Node>();
         visitedSet.add(root);
@@ -352,6 +355,7 @@ public class CoastGuard {
             root.gridWidth = gridWidth;
             root.gridLength = gridLength;
             root.stations = stations;
+            root.capacity = capacity;
             // System.out.println("Root node created" + root.x + " " + root.y);
             visitedSet = new HashSet<Node>();
             visitedSet.add(root);
@@ -448,6 +452,7 @@ public class CoastGuard {
         root.gridWidth = gridWidth;
         root.gridLength = gridLength;
         root.stations = stations;
+        root.capacity = capacity;
         // System.out.println("Root node created" + root.x + " " + root.y);
         visitedSet = new HashSet<Node>();
         visitedSet.add(root);
@@ -513,11 +518,189 @@ public class CoastGuard {
 
     // A* Search
     // The cost is the number of people who died
-    public static void astar(String grid, Boolean visualize) {
+    public static Node astar1(String grid, Boolean visualize) {
+        // creating the root node of the tree
+        // splitting the grid string into an array of strings
+        String[] gridArray = grid.split(";");
+        // Get grid size
+        String[] gridSize = gridArray[0].split(",");
+        int gridWidth = Integer.parseInt(gridSize[0]);
+        int gridLength = Integer.parseInt(gridSize[1]);
+        int capacity = Integer.parseInt(gridArray[1]);
+
+        // Get location of the boat
+        String[] boatLocation = gridArray[2].split(",");
+
+        int boatX = Integer.parseInt(boatLocation[0]);
+        int boatY = Integer.parseInt(boatLocation[1]);
+
+        ArrayList<Station> stations = getStations(gridArray);
+        HashSet<Node> visitedSet;
+        ArrayList<Ship> ships = getShips(gridArray);
+
+        Node root = new Node();
+        root.x = boatX;
+        root.y = boatY;
+        root.depth = 0;
+        root.ships = ships;
+        root.gridWidth = gridWidth;
+        root.gridLength = gridLength;
+        root.stations = stations;
+        root.capacity = capacity;
+        // System.out.println("Root node created" + root.x + " " + root.y);
+        visitedSet = new HashSet<Node>();
+        visitedSet.add(root);
+
+        // create a priority queue for UCS
+        PriorityQueue<Node> queue = new PriorityQueue<Node>(new ComparatorForAstar1());
+
+        // add root node to the queue
+        queue.add(root);
+
+        // while queue is not empty
+        while (queue.size() != 0) {
+            // remove the first node from the queue
+            Node node = queue.poll();
+            // System.out.println("Node removed from queue" + node.x + " " + node.y);
+            // if the node is the goal node
+            if (node.ships.size() == 0 && node.numberOfPeopleOntheCoastGuard == 0) {
+                // System.out.println("Goal node found");
+                // return the node
+                return node;
+            }
+
+            // get the children of the node
+            ArrayList<Node> children = node.getChildren(capacity, gridWidth, gridLength, stations);
+            // System.out.println("Children generated");
+            // for each child
+            for (Node child : children) {
+                // if the child is not in the visited set
+                if (!visitedSet.contains(child)) {
+                    // get the action of the node
+                    switch (child.action) {
+                        case "up":
+                            node.up = child;
+                            break;
+                        case "down":
+                            node.down = child;
+                            break;
+                        case "left":
+                            node.left = child;
+                            break;
+                        case "right":
+                            node.right = child;
+                            break;
+                        case "pickup":
+                            node.pickup = child;
+                            break;
+                        case "dropoff":
+                            node.dropoff = child;
+                            break;
+                        case "retrieve":
+                            node.retrieve = child;
+                            break;
+                    }
+                    // add the child to the visited set
+                    visitedSet.add(child);
+                    // add the child to the queue
+                    queue.add(child);
+                }
+            }
+        }
+        return null;
 
     }
 
-    public static void greedy(String grid, Boolean visualize) {
+    public static Node greedy1(String grid, Boolean visualize) {
+        // creating the root node of the tree
+        // splitting the grid string into an array of strings
+        String[] gridArray = grid.split(";");
+        // Get grid size
+        String[] gridSize = gridArray[0].split(",");
+        int gridWidth = Integer.parseInt(gridSize[0]);
+        int gridLength = Integer.parseInt(gridSize[1]);
+        int capacity = Integer.parseInt(gridArray[1]);
+
+        // Get location of the boat
+        String[] boatLocation = gridArray[2].split(",");
+
+        int boatX = Integer.parseInt(boatLocation[0]);
+        int boatY = Integer.parseInt(boatLocation[1]);
+
+        ArrayList<Station> stations = getStations(gridArray);
+        HashSet<Node> visitedSet;
+        ArrayList<Ship> ships = getShips(gridArray);
+
+        Node root = new Node();
+        root.x = boatX;
+        root.y = boatY;
+        root.depth = 0;
+        root.ships = ships;
+        root.gridWidth = gridWidth;
+        root.gridLength = gridLength;
+        root.stations = stations;
+        root.capacity = capacity;
+        // System.out.println("Root node created" + root.x + " " + root.y);
+        visitedSet = new HashSet<Node>();
+        visitedSet.add(root);
+
+        // create a priority queue for UCS
+        PriorityQueue<Node> queue = new PriorityQueue<Node>(new ComparatorForGreedy1());
+
+        // add root node to the queue
+        queue.add(root);
+
+        // while queue is not empty
+        while (queue.size() != 0) {
+            // remove the first node from the queue
+            Node node = queue.poll();
+            // System.out.println("Node removed from queue" + node.x + " " + node.y);
+            // if the node is the goal node
+            if (node.ships.size() == 0 && node.numberOfPeopleOntheCoastGuard == 0) {
+                // System.out.println("Goal node found");
+                // return the node
+                return node;
+            }
+
+            // get the children of the node
+            ArrayList<Node> children = node.getChildren(capacity, gridWidth, gridLength, stations);
+            // System.out.println("Children generated");
+            // for each child
+            for (Node child : children) {
+                // if the child is not in the visited set
+                if (!visitedSet.contains(child)) {
+                    // get the action of the node
+                    switch (child.action) {
+                        case "up":
+                            node.up = child;
+                            break;
+                        case "down":
+                            node.down = child;
+                            break;
+                        case "left":
+                            node.left = child;
+                            break;
+                        case "right":
+                            node.right = child;
+                            break;
+                        case "pickup":
+                            node.pickup = child;
+                            break;
+                        case "dropoff":
+                            node.dropoff = child;
+                            break;
+                        case "retrieve":
+                            node.retrieve = child;
+                            break;
+                    }
+                    // add the child to the visited set
+                    visitedSet.add(child);
+                    // add the child to the queue
+                    queue.add(child);
+                }
+            }
+        }
+        return null;
 
     }
 
@@ -557,21 +740,21 @@ public class CoastGuard {
         return stations;
     }
 
-    public static void visualize(Node node){
-        //go from the node to the root and print each node
+    public static void visualize(Node node) {
+        // go from the node to the root and print each node
         // System.out.println("Visualizing the path");
         ArrayList<Node> path = new ArrayList<Node>();
         Node currentNode = node;
-        while(currentNode != null){
+        while (currentNode != null) {
             path.add(currentNode);
             currentNode = currentNode.parent;
         }
         // System.out.println("Path generated");
         // print the path
-        for(int i = path.size() - 1; i >= 0; i--){
-            if (i==path.size() - 1){
+        for (int i = path.size() - 1; i >= 0; i--) {
+            if (i == path.size() - 1) {
                 System.out.println("Root");
-            }else{
+            } else {
                 System.out.println(path.get(i).action);
             }
 
