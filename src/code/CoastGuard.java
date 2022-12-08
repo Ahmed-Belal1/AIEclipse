@@ -1,12 +1,13 @@
 package code;
+
 import java.util.*;
 
 public class CoastGuard {
     public static void main(String[] args) throws Exception {
 
-       // System.out.println("Coast Guard");
+        // System.out.println("Coast Guard");
         CoastGuard cg = new CoastGuard();
-        //System.out.println(cg.genGrid());
+        // System.out.println(cg.genGrid());
         // SearchTree tree = new SearchTree("6,7;82;1,4;2,3;1,1,58,3,0,58,4,2,72;");
         // System.out.println(tree.size);
         bfs("10,6;59;1,7;0,0,2,2,3,0,5,3;1,3,69,3,4,80,4,7,94,4,9,14,5,2,39;", true);
@@ -80,35 +81,36 @@ public class CoastGuard {
         if (strategy.equals("BF")) {
             goal = bfs(grid, visualize);
         } else if (strategy.equals("DF")) {
-            goal=dfs(grid, visualize);
+            goal = dfs(grid, visualize);
         } else if (strategy.equals("ID")) {
-        	goal=ids(grid, visualize);
+            goal = ids(grid, visualize);
         } else if (strategy.equals("UC")) {
-            goal=ucs(grid, visualize);
+            goal = ucs(grid, visualize);
         } else if (strategy.equals("A*")) {
-//            astar(grid, visualize);
+            // astar(grid, visualize);
         } else if (strategy.equals("Greedy")) {
-//            greedy(grid, visualize);
+            // greedy(grid, visualize);
         }
 
         String path = "";
-       // System.out.println(goal);
+        // System.out.println(goal);
         Node current = goal;
         int numberOfnodes = 0;
-        int numberOfCollectedBlackboxes=0;
+        int numberOfCollectedBlackboxes = 0;
         if (goal != null) {
             while (current.parent != null) {
                 numberOfnodes++;
                 if (current.action.equals("retrieve")) {
-                	//System.out.println(current.parent.parent.action+" " +current.ships.size());
-                	numberOfCollectedBlackboxes++;
+                    System.out.println(current.parent.parent.action + " " + current.parent.ships.get(0).damage);
+                    numberOfCollectedBlackboxes++;
                 }
-                //System.out.println(current.action +" "+ current.numberOfPeopleOntheCoastGuard+" " +current.numberOfdeath+" "+ (current.ships.size() !=0? current.ships.get(0).numberOfPeopleOntheShip :0));
-                if (current==goal) {
-                	path = current.action + path;
-                }
-                else {
-                	path = current.action + "," + path;
+                // System.out.println(current.action +" "+
+                // current.numberOfPeopleOntheCoastGuard+" " +current.numberOfdeath+" "+
+                // (current.ships.size() !=0? current.ships.get(0).numberOfPeopleOntheShip :0));
+                if (current == goal) {
+                    path = current.action + path;
+                } else {
+                    path = current.action + "," + path;
                 }
                 current = current.parent;
             }
@@ -143,7 +145,7 @@ public class CoastGuard {
         root.y = boatY;
         root.depth = 0;
         root.ships = ships;
-        //System.out.println("Root node created" + root.x + " " + root.y);
+        // System.out.println("Root node created" + root.x + " " + root.y);
         visitedSet = new HashSet<Node>();
         visitedSet.add(root);
 
@@ -160,7 +162,7 @@ public class CoastGuard {
             // System.out.println("Node removed from queue" + node.x + " " + node.y);
             // if the node is the goal node
             if (node.ships.size() == 0 && node.numberOfPeopleOntheCoastGuard == 0) {
-                //System.out.println("Goal node found");
+                // System.out.println("Goal node found");
                 // return the node
                 return node;
             }
@@ -234,7 +236,7 @@ public class CoastGuard {
         root.y = boatY;
         root.depth = 0;
         root.ships = ships;
-       // System.out.println("Root node created" + root.x + " " + root.y);
+        // System.out.println("Root node created" + root.x + " " + root.y);
         visitedSet = new HashSet<Node>();
         visitedSet.add(root);
 
@@ -251,7 +253,7 @@ public class CoastGuard {
             // System.out.println("Node removed from stack" + node.x + " " + node.y);
             // if the node is the goal node
             if (node.ships.size() == 0 && node.numberOfPeopleOntheCoastGuard == 0) {
-                //System.out.println("Goal node found");
+                // System.out.println("Goal node found");
                 // return the node
                 return node;
             }
@@ -321,8 +323,6 @@ public class CoastGuard {
         HashSet<Node> visitedSet;
         ArrayList<Ship> ships = getShips(gridArray);
 
-
-
         // create max depth
         int maxDepth = 150;
 
@@ -333,14 +333,14 @@ public class CoastGuard {
         while (currentDepth <= maxDepth) {
             // create a stack for DFS
             Stack<Node> stack = new Stack<Node>();
-            //System.out.println(currentDepth);
+            // System.out.println(currentDepth);
             // add root node to the stack
             Node root = new Node();
             root.x = boatX;
             root.y = boatY;
             root.depth = 0;
             root.ships = ships;
-            //System.out.println("Root node created" + root.x + " " + root.y);
+            // System.out.println("Root node created" + root.x + " " + root.y);
             visitedSet = new HashSet<Node>();
             visitedSet.add(root);
             stack.push(root);
@@ -352,7 +352,7 @@ public class CoastGuard {
                 // System.out.println("Node removed from stack" + node.x + " " + node.y);
                 // if the node is the goal node
                 if (node.ships.size() == 0 && node.numberOfPeopleOntheCoastGuard == 0) {
-                    //System.out.println("Goal node found");
+                    // System.out.println("Goal node found");
                     // return the node
                     return node;
                 }
@@ -433,7 +433,7 @@ public class CoastGuard {
         root.y = boatY;
         root.depth = 0;
         root.ships = ships;
-       // System.out.println("Root node created" + root.x + " " + root.y);
+        // System.out.println("Root node created" + root.x + " " + root.y);
         visitedSet = new HashSet<Node>();
         visitedSet.add(root);
 
@@ -450,7 +450,7 @@ public class CoastGuard {
             // System.out.println("Node removed from queue" + node.x + " " + node.y);
             // if the node is the goal node
             if (node.ships.size() == 0 && node.numberOfPeopleOntheCoastGuard == 0) {
-                //System.out.println("Goal node found");
+                // System.out.println("Goal node found");
                 // return the node
                 return node;
             }

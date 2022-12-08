@@ -251,8 +251,6 @@ public class Node {
                         shipsCopy.add(ship);
                     } else if (action.equals("retrieve")) {
                         child.numberOfCollectedBlackboxes++;
-                        s.blackboxtaken = true;
-                        s.retrievable = false;
                     }
                 } else {
                     Ship ship = new Ship();
