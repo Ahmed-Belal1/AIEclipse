@@ -17,4 +17,11 @@ public class Ship {
         blackboxtaken = false;
         retrievable = true;
     }
+
+    //tostring
+    public String toString() {
+        return "{numberOfPeopleOntheShip=" + numberOfPeopleOntheShip + ", damage=" + damage + ", wreck=" + wreck
+                + ", blackboxtaken=" + blackboxtaken + ", positionXOftheShip=" + positionXOftheShip
+                + ", positionYOftheShip=" + positionYOftheShip + ", retrievable=" + retrievable + "}";
+    }
 }

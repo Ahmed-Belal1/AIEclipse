@@ -2,6 +2,8 @@ package code;
 
 import java.util.*;
 
+import org.junit.platform.commons.util.ToStringBuilder;
+
 public class Node {
     Node left;
     Node right;
@@ -21,6 +23,9 @@ public class Node {
     int numberOfdeath;
     int numberOfPeopleSaved;
     int depth;
+    int gridWidth;
+    int gridLength;
+    List<Station> stations;
 
     public Node() {
         left = null;
@@ -39,6 +44,52 @@ public class Node {
         ships = new ArrayList<Ship>();
         isGoal = false;
         action = "";
+    }
+
+    @Override
+    public String toString(){
+
+        String represent = "[x=" + x + ", y=" + y + ", numberOfPeopleOntheCoastGuard=" + numberOfPeopleOntheCoastGuard + ", ships=" + ships
+                + ", isGoal=" + isGoal + ", action=" + action + ", numberOfCollectedBlackboxes="
+                + numberOfCollectedBlackboxes + ", numberOfdeath=" + numberOfdeath + ", numberOfPeopleSaved="
+                + numberOfPeopleSaved + ", depth=" + depth + ", gridWidth=" + gridWidth + ", gridLength=" + gridLength
+                + ", stations=" + stations + "]";
+                //represent the node as a grid with the coast guard and the ships and the stations
+        String[][] grid = new String[gridLength][gridWidth];
+        for(int i = 0; i < gridLength; i++){
+            for(int j = 0; j < gridWidth; j++){
+                grid[i][j] = "0\t";
+            }
+        }
+        grid[x][y] = "C\t";
+        for(Ship ship : ships){
+            //if ship in same position as coast guard
+            if(ship.positionXOftheShip == x && ship.positionYOftheShip == y){
+                grid[ship.positionXOftheShip][ship.positionYOftheShip] = "SC\t";
+            }
+            else{
+                grid[ship.positionXOftheShip][ship.positionYOftheShip] = "S\t";
+            }
+        }
+        for(Station station : stations){
+            //if station in same position as coast guard
+            if(station.x == x && station.y == y){
+                grid[station.x][station.y] = "TC\t";
+            }
+            else{
+                grid[station.x][station.y] = "T\t";
+            }
+        }
+        String result = "";
+        for(int i = 0; i < gridLength; i++){
+            for(int j = 0; j < gridWidth; j++){
+                result += grid[i][j];
+            }
+            result += "\n";
+        }
+        return represent+"\n"+result;
+
+        
     }
 
     // overwrite the equals method
@@ -105,7 +156,10 @@ public class Node {
             leftNode.numberOfPeopleSaved = this.numberOfPeopleSaved;
             leftNode.depth = this.depth + 1;
             leftNode.ships = handleShips(this.ships, "left", null,
-                    capacity - this.numberOfPeopleOntheCoastGuard, leftNode);
+            capacity - this.numberOfPeopleOntheCoastGuard, leftNode);
+            leftNode.gridWidth = gridWidth;
+            leftNode.gridLength = gridLength;
+            leftNode.stations = stations;
 
             children.add(leftNode);
         }
@@ -121,7 +175,10 @@ public class Node {
             rightNode.numberOfPeopleSaved = this.numberOfPeopleSaved;
             rightNode.depth = this.depth + 1;
             rightNode.ships = handleShips(this.ships, "right", null,
-                    capacity - this.numberOfPeopleOntheCoastGuard, rightNode);
+            capacity - this.numberOfPeopleOntheCoastGuard, rightNode);
+            rightNode.gridWidth = gridWidth;
+            rightNode.gridLength = gridLength;
+            rightNode.stations = stations;
 
             children.add(rightNode);
         }
@@ -138,7 +195,10 @@ public class Node {
             upNode.numberOfPeopleSaved = this.numberOfPeopleSaved;
             upNode.depth = this.depth + 1;
             upNode.ships = handleShips(this.ships, "up", null,
-                    capacity - this.numberOfPeopleOntheCoastGuard, upNode);
+            capacity - this.numberOfPeopleOntheCoastGuard, upNode);
+            upNode.gridWidth = gridWidth;
+            upNode.gridLength = gridLength;
+            upNode.stations = stations;
 
             children.add(upNode);
         }
@@ -155,7 +215,11 @@ public class Node {
             downNode.numberOfdeath = this.numberOfdeath;
             downNode.depth = this.depth + 1;
             downNode.ships = handleShips(this.ships, "down", null,
-                    capacity - this.numberOfPeopleOntheCoastGuard, downNode);
+            capacity - this.numberOfPeopleOntheCoastGuard, downNode);
+            downNode.gridWidth = gridWidth;
+            downNode.gridLength = gridLength;
+            downNode.stations = stations;
+
             children.add(downNode);
         }
 
@@ -173,7 +237,11 @@ public class Node {
             pickup.depth = this.depth + 1;
             // System.out.println(ship.numberOfPeopleOntheShip);
             pickup.ships = handleShips(this.ships, "pickup", ship,
-                    capacity - this.numberOfPeopleOntheCoastGuard, pickup);
+            capacity - this.numberOfPeopleOntheCoastGuard, pickup);
+            pickup.gridWidth = gridWidth;
+            pickup.gridLength = gridLength;
+            pickup.stations = stations;
+
             if (this.numberOfPeopleOntheCoastGuard + ship.numberOfPeopleOntheShip < capacity) {
                 pickup.numberOfPeopleOntheCoastGuard = this.numberOfPeopleOntheCoastGuard
                         + ship.numberOfPeopleOntheShip;
@@ -194,7 +262,10 @@ public class Node {
             retriNode.numberOfPeopleSaved = this.numberOfPeopleSaved;
             retriNode.depth = this.depth + 1;
             retriNode.ships = handleShips(this.ships, "retrieve", ship,
-                    capacity - this.numberOfPeopleOntheCoastGuard, retriNode);
+            capacity - this.numberOfPeopleOntheCoastGuard, retriNode);
+            retriNode.gridWidth = gridWidth;
+            retriNode.gridLength = gridLength;
+            retriNode.stations = stations;
             // Ship ship1 = onAShip(this.x, this.y, this.ships);
             if (ship != null && ship.wreck && ship.retrievable) {
                 children.add(retriNode);
@@ -213,9 +284,12 @@ public class Node {
             dropoff.numberOfdeath = this.numberOfdeath;
             dropoff.depth = this.depth + 1;
             dropoff.ships = handleShips(this.ships, "dropoff", null,
-                    capacity - this.numberOfPeopleOntheCoastGuard, dropoff);
+            capacity - this.numberOfPeopleOntheCoastGuard, dropoff);
             dropoff.numberOfPeopleSaved = this.numberOfPeopleSaved + this.numberOfPeopleOntheCoastGuard;
             dropoff.numberOfPeopleOntheCoastGuard = 0;
+            dropoff.gridWidth = gridWidth;
+            dropoff.gridLength = gridLength;
+            dropoff.stations = stations;
             // System.out.println(this.visitedSet.contains(dropoff));
             children.add(dropoff);
         }

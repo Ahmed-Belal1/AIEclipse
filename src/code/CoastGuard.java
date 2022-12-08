@@ -145,6 +145,9 @@ public class CoastGuard {
         root.y = boatY;
         root.depth = 0;
         root.ships = ships;
+        root.gridWidth = gridWidth;
+        root.gridLength = gridLength;
+        root.stations = stations;
         // System.out.println("Root node created" + root.x + " " + root.y);
         visitedSet = new HashSet<Node>();
         visitedSet.add(root);
@@ -164,6 +167,9 @@ public class CoastGuard {
             if (node.ships.size() == 0 && node.numberOfPeopleOntheCoastGuard == 0) {
                 // System.out.println("Goal node found");
                 // return the node
+                if(visualize){
+                    visualize(node);
+                }
                 return node;
             }
 
@@ -236,6 +242,9 @@ public class CoastGuard {
         root.y = boatY;
         root.depth = 0;
         root.ships = ships;
+        root.gridWidth = gridWidth;
+        root.gridLength = gridLength;
+        root.stations = stations;
         // System.out.println("Root node created" + root.x + " " + root.y);
         visitedSet = new HashSet<Node>();
         visitedSet.add(root);
@@ -340,6 +349,9 @@ public class CoastGuard {
             root.y = boatY;
             root.depth = 0;
             root.ships = ships;
+            root.gridWidth = gridWidth;
+            root.gridLength = gridLength;
+            root.stations = stations;
             // System.out.println("Root node created" + root.x + " " + root.y);
             visitedSet = new HashSet<Node>();
             visitedSet.add(root);
@@ -433,6 +445,9 @@ public class CoastGuard {
         root.y = boatY;
         root.depth = 0;
         root.ships = ships;
+        root.gridWidth = gridWidth;
+        root.gridLength = gridLength;
+        root.stations = stations;
         // System.out.println("Root node created" + root.x + " " + root.y);
         visitedSet = new HashSet<Node>();
         visitedSet.add(root);
@@ -540,6 +555,30 @@ public class CoastGuard {
         }
 
         return stations;
+    }
+
+    public static void visualize(Node node){
+        //go from the node to the root and print each node
+        // System.out.println("Visualizing the path");
+        ArrayList<Node> path = new ArrayList<Node>();
+        Node currentNode = node;
+        while(currentNode != null){
+            path.add(currentNode);
+            currentNode = currentNode.parent;
+        }
+        // System.out.println("Path generated");
+        // print the path
+        for(int i = path.size() - 1; i >= 0; i--){
+            if (i==path.size() - 1){
+                System.out.println("Root");
+            }else{
+                System.out.println(path.get(i).action);
+            }
+
+            Node n = path.get(i);
+            System.out.println(n);
+            System.out.println("-----------------------------------------------------------------");
+        }
     }
 
 }
