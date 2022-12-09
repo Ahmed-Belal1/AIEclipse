@@ -2,7 +2,7 @@ package code;
 
 import java.util.*;
 
-public class CoastGuard {
+public class CoastGuard extends Generic {
     public static void main(String[] args) throws Exception {
 
         // System.out.println("Coast Guard");
@@ -75,8 +75,12 @@ public class CoastGuard {
 
         return gridString;
     }
-
     public static String solve(String grid, String strategy, Boolean visualize) {
+        CoastGuard cg = new CoastGuard();
+        return cg.solver(grid, strategy, visualize);
+    }
+
+    public String solver(String grid,String strategy,Boolean visualize){
         Node goal = null;
         if (strategy.equals("BF")) {
             goal = bfs(grid, visualize);
@@ -126,6 +130,7 @@ public class CoastGuard {
 
         return "";
     }
+
 
     public static Node bfs(String grid, Boolean visualize) {
         // creating the root node of the tree
