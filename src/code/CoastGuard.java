@@ -119,7 +119,8 @@ public class CoastGuard {
                 }
                 current = current.parent;
             }
-            System.out.println(path + ";" + goal.numberOfdeath + ";" + numberOfCollectedBlackboxes + ";" + goal.nodesExpanded);
+            // System.out.println(path + ";" + goal.numberOfdeath + ";" +
+            // numberOfCollectedBlackboxes + ";" + goal.nodesExpanded);
             return path + ";" + goal.numberOfdeath + ";" + numberOfCollectedBlackboxes + ";" + goal.nodesExpanded;
         }
 
@@ -181,7 +182,7 @@ public class CoastGuard {
                     visualize(node);
                 }
 
-                node.nodesExpanded=nodesExpanded;
+                node.nodesExpanded = nodesExpanded;
 
                 return node;
             }
@@ -270,7 +271,7 @@ public class CoastGuard {
         stack.push(root);
 
         int nodesExpanded = 0;
-        
+
         // while stack is not empty
         while (stack.size() != 0) {
             // remove the first node from the stack
@@ -279,7 +280,7 @@ public class CoastGuard {
             // System.out.println("Node removed from stack" + node.x + " " + node.y);
             // if the node is the goal node
             if (node.ships.size() == 0 && node.numberOfPeopleOntheCoastGuard == 0) {
-                
+
                 if (visualize) {
                     visualize(node);
                 }
@@ -391,7 +392,7 @@ public class CoastGuard {
                 // System.out.println("Node removed from stack" + node.x + " " + node.y);
                 // if the node is the goal node
                 if (node.ships.size() == 0 && node.numberOfPeopleOntheCoastGuard == 0) {
-                    
+
                     if (visualize) {
                         visualize(node);
                     }
@@ -501,7 +502,7 @@ public class CoastGuard {
             // System.out.println("Node removed from queue" + node.x + " " + node.y);
             // if the node is the goal node
             if (node.ships.size() == 0 && node.numberOfPeopleOntheCoastGuard == 0) {
-                
+
                 if (visualize) {
                     visualize(node);
                 }
@@ -601,7 +602,7 @@ public class CoastGuard {
             // System.out.println("Node removed from queue" + node.x + " " + node.y);
             // if the node is the goal node
             if (node.ships.size() == 0 && node.numberOfPeopleOntheCoastGuard == 0) {
-                
+
                 if (visualize) {
                     visualize(node);
                 }
@@ -653,7 +654,6 @@ public class CoastGuard {
         return null;
     }
 
-    
     private static Node greedy2(String grid, Boolean visualize) {
         // creating the root node of the tree
         // splitting the grid string into an array of strings
@@ -754,7 +754,6 @@ public class CoastGuard {
         return null;
     }
 
-    
     // A* Search
     // The cost is the number of people who died
     public static Node astar1(String grid, Boolean visualize) {
@@ -805,7 +804,7 @@ public class CoastGuard {
             // System.out.println("Node removed from queue" + node.x + " " + node.y);
             // if the node is the goal node
             if (node.ships.size() == 0 && node.numberOfPeopleOntheCoastGuard == 0) {
-                
+
                 if (visualize) {
                     visualize(node);
                 }
