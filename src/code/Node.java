@@ -27,6 +27,7 @@ public class Node {
     int gridLength;
     int capacity;
     List<Station> stations;
+    int nodesExpanded;
 
     public Node() {
         left = null;
