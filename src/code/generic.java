@@ -1,9 +1,9 @@
 package code;
 
-public abstract class generic {
+public abstract class Generic {
 
-    public abstract String GenGrid();
+    public abstract String genGrid();
 
-    public abstract void Solve(String grid, String strategy, Boolean visualize);
+    public abstract String solver(String grid, String strategy, Boolean visualize);
 }
 
