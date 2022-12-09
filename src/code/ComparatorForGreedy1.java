@@ -133,7 +133,7 @@ public class ComparatorForGreedy1 implements Comparator<Node> {
             }
 
         }
-        System.out.println("cost: " + cost);
+        // System.out.println("cost: " + cost);
         return cost;
     }
 

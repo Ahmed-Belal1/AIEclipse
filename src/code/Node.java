@@ -255,7 +255,7 @@ public class Node {
             }
             // System.out.println(this.capacity + "Ship " + pickup.numberOfPeopleOntheBoat);
             children.add(pickup);
-        } else if (ship != null && ship.wreck && ship.retrievable) {
+        } else if (ship != null && ship.wreck && ship.retrievable && ship.damage < 20) {
             Node retriNode = new Node();
             retriNode.x = this.x;
             retriNode.y = this.y;

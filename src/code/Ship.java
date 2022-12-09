@@ -1,4 +1,5 @@
 package code;
+
 public class Ship {
     int numberOfPeopleOntheShip;
     int damage;
@@ -18,7 +19,7 @@ public class Ship {
         retrievable = true;
     }
 
-    //tostring
+    // tostring
     public String toString() {
         return "{numberOfPeopleOntheShip=" + numberOfPeopleOntheShip + ", damage=" + damage + ", wreck=" + wreck
                 + ", blackboxtaken=" + blackboxtaken + ", positionXOftheShip=" + positionXOftheShip
